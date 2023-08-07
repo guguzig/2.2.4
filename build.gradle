@@ -1,0 +1,38 @@
+import java.text.SimpleDateFormat
+
+plugins {
+    id 'java'
+    id 'application'
+}
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+application {
+    mainClassName = 'org.example.Main'
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.8.1'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+task archiveReports(type: Zip) {
+    def timestamp = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date())
+    archiveFileName.set("reports_${timestamp}.zip")
+    from("build/reports")
+}
+
+task cleanReports(type: Delete) {
+    delete fileTree("build") {
+        include '**/reports_*.zip'
+    }
+}
